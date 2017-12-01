@@ -16,6 +16,7 @@ gem 'coffee-rails', '~> 4.2'
 gem 'turbolinks', '~> 5'
 gem 'jbuilder', '~> 2.5'
 gem 'redis', '~> 3.0'
+gem 'haml-rails', '~> 1.0'
 gem 'webpacker'
 # gem 'bcrypt', '~> 3.1.7'
 
@@ -25,6 +26,7 @@ gem 'webpacker'
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'capybara'
+  gem 'capybara-webkit'
   gem 'pry'
   gem 'pry-byebug'
   gem 'pry-rails'
