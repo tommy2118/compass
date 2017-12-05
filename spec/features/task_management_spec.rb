@@ -11,6 +11,6 @@ RSpec.feature "Task management", type: :feature, js: true do
       click_button "Create Task"
     end
 
-    expect(message).to eq("Task saved successfully.")
+    expect(message).to eq("Task created successfully.")
   end
 end

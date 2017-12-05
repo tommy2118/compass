@@ -22,7 +22,7 @@ class TaskForm extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    alert('Task created Successfully.');
+    alert('Task created successfully.');
     this.resetState();
   }
 
