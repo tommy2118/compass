@@ -1,7 +1,7 @@
 require "rails_helper"
 
-RSpec.feature "Task management", type: :feature, js: true do
-  scenario "creation", :js do
+RSpec.feature "Task management", type: :feature do
+  scenario "creation", js: true do
     task_title = "title"
 
     visit new_task_path
