@@ -8,10 +8,14 @@ class TaskNew extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="m-4 pl-4">
         <h1>New Task</h1>
-        <TaskForm categories={ this.props.categories }/>
-    </div>
+        <div className="row">
+          <div className="col-sm-6">
+            <TaskForm {...this.props}/>
+          </div>
+        </div>
+      </div>
     );
   }
 }

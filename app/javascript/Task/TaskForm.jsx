@@ -4,59 +4,132 @@ import CategorySelector from './CategorySelector';
 class TaskForm extends React.Component {
   constructor(props) {
   super(props);
-    this.state = {title: ''};
-    this.handleChange = this.handleChange.bind(this);
+    this.state = {
+      title: '',
+      description: '',
+      selectedOption: '',
+      taskList: [],
+      categories: this.props.categories,
+      tasks: this.props.tasks,
+    };
+    this.handleTitleChange = this.handleTitleChange.bind(this);
+    this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
+    this.handleSelectedOptionChange= this.handleSelectedOptionChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.resetState = this.resetState.bind(this);
   };
 
   resetState() {
-    this.setState({ title: "",
+    this.setState({ title: '',
       value: '',
+      description: '',
     });
   }
 
-  handleChange(event) {
+  handleTitleChange(event) {
     this.setState({title: event.target.value})
+  }
+
+  handleSelectedOptionChange(option) {
+    this.setState({selectedOption: option})
+  }
+
+  handleDescriptionChange(event) {
+    this.setState({description: event.target.value})
   }
 
   handleSubmit(event) {
     event.preventDefault();
-    alert('Task created successfully.');
-    this.resetState();
+    this.state.taskList.push({
+      title: this.state.title,
+      description: this.state.description,
+    });
+    $.ajax({
+      url: "/tasks",
+      dataType: 'json',
+      type: 'POST',
+      data: {
+        task: {
+          category: this.state.selectedOption,
+          title: this.state.title,
+          description: this.state.description,
+        },
+      },
+      success: (res) => {
+        const newTasksList = this.state.tasks;
+        newTasksList.push(res);
+        console.log("value: ", this.state.selectedOption);
+        this.setState({
+          tasks: newTasksList,
+          title: '',
+          selectedOption: '',
+          description: '',
+          errors: {},
+        });
+      },
+      error: (res) => {
+        this.setState({ errors: res.responseJSON.errors });
+      },
+    });
   }
 
   render() {
-    const categories = this.props.categories;
-    let message = this.state.title;
+    const { categories, tasks } = this.state;
+
+    function DefinitionTerm(props) {
+      return <dt>{props.value}</dt>
+    }
+
+    function DefinitionDescription(props) {
+      return <dd>Description: {props.value}</dd>
+    }
+    const tasksAll = tasks.map((task, index) =>
+      <React.Fragment key={index}>
+        <p>Category: {task.category}</p>
+        <DefinitionTerm value={task.title} />
+        <DefinitionDescription value={task.description} />
+      </React.Fragment>
+    );
+
     return (
-      <div className="w-full max-w-xs">
-        <form onSubmit={this.handleSubmit}
-          className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-          <div className="mb-4">
-            <label className="block text-grey-darker text-sm font-bold mb-2"
-              htmlFor="task_title">
-              Title
-            </label>
-            <input type="text"
-              name="task_title"
-              id="task_title"
-              value={this.state.title}
-              onChange={this.handleChange.bind(this)}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker"
-            />
+      <div className="">
+        <form onSubmit={this.handleSubmit} className="">
+          <div className="mt-2">
+            <CategorySelector options={categories} selectedOption={this.state.selectedOption} onSelectedOptionChange={this.handleSelectedOptionChange} label="Main Category"/>
+            <div className="form-group">
+              <label className="col-form-label"
+                htmlFor="task_title">
+                Title
+              </label>
+              <input type="text"
+                name="task_title"
+                id="task_title"
+                value={this.state.title}
+                onChange={this.handleTitleChange}
+                className="form-control"
+              />
+            </div>
+            <div className="form-group">
+              <label className="col-form-label">
+                Description
+              </label>
+              <textarea rows="4" className="form-control"
+                value={this.state.description}
+                onChange={this.handleDescriptionChange}
+              />
+            </div>
           </div>
-          <div>
-            <CategorySelector options={categories} title={this.state.title} value="" />
-          </div>
-          <input type="submit" value="Create Task"
-            className="bg-blue hover:bg-blue-dark text-white font-bold py-2 px-4 mt-4 rounded"/>
+          <button type="submit"
+            className="btn btn-primary"
+          >Create Task
+          </button>
         </form>
-        { message &&
-            <div className="bg-blue-lightest border-t border-b border-blue text-blue-dark px-4 py-3" role="alert">
-        <p className="font-bold">Informational message</p>
-        <p className="text-sm">Titles are important!  Choose yours well.</p>
-      </div>}
+        <div className="mt-4">
+          <h3 className="border border-top-0 border-right-0 border-left-0">Task List</h3>
+          <dl>
+            {tasksAll}
+          </dl>
+        </div>
       </div>
     );
   }

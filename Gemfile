@@ -18,6 +18,8 @@ gem 'jbuilder', '~> 2.5'
 gem 'redis', '~> 3.0'
 gem 'haml-rails', '~> 1.0'
 gem 'webpacker'
+gem 'bootstrap', '~> 4.0.0.beta2.1'
+gem 'jquery-rails'
 # gem 'bcrypt', '~> 3.1.7'
 
 # Use Capistrano for deployment

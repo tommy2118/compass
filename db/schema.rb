@@ -16,13 +16,12 @@ ActiveRecord::Schema.define(version: 20171201172343) do
   enable_extension "plpgsql"
 
   create_table "tasks", force: :cascade do |t|
-    t.string "title"
     t.integer "category"
-    t.boolean "is_core"
-    t.boolean "requires_review"
-    t.date "started_on"
-    t.date "completed_on"
-    t.date "reviewed_on"
+    t.string "title"
+    t.text "description"
+    t.boolean "is_core", default: false
+    t.boolean "requires_review", default: false
+    t.datetime "reviewed_at", default: "2017-12-14 02:51:52"
     t.text "references"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

@@ -1,10 +1,23 @@
-!!!
-%html
+!!! 5
+%html{:lang => "en"}
   %head
     %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
+    %meta(name="viewport" content="width=device-width, initial-scale=1" shrink-to-fit="no")/
     %title Compass
     = csrf_meta_tags
     = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload'
     = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
   %body
-    = yield
+    .container
+      %nav.navbar.navbar-dark.bg-primary
+        %a.navbar-brand(href="#")Compass
+        %button.navbar-toggler( type="button" data-toggle="collapse" data-target="#navbarTex" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navagation")
+          %span.navbar-toggler-icon
+    .container
+      .row.justify-content-center
+        .col-sm-12
+          = yield
+        %footer
+          %p
+            &copy; VetMG Media
+            = Date.today.year

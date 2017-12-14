@@ -3,24 +3,23 @@ import React from 'react';
 class CategorySelector extends React.Component {
   constructor(props) {
     super(props);
-
-    this.state = { value: this.props.value };
     this.handleChange = this.handleChange.bind(this);
   }
 
   handleChange(event) {
-    this.setState({value: event.target.value})
+    this.props.onSelectedOptionChange(event.target.value);
   }
   render() {
     const { options } = this.props;
     return (
-      <div className="">
-        <select className=""
+      <div className="form-group">
+        <label className="col-form-label">{this.props.label}</label>
+        <select className="form-control"
           id="category"
           name="task[category]"
-          value={this.state.value}
+          value={this.props.selectedOption}
           onChange={this.handleChange}
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+          className="form-control"
         >
           <option>Please select a category</option>
           {Object.keys(options).map((value, index) => {
@@ -29,9 +28,6 @@ class CategorySelector extends React.Component {
             </option>
           })}
         </select>
-        {this.state.value && this.props.title &&
-            <p>Form is valid.  You may submit.</p>
-        }
       </div>
     )
   }
